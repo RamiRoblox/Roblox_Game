@@ -41,6 +41,7 @@ Git (en Windows incluye Git Bash), GitHub CLI (`gh`), Rokit, Roblox Studio y Cla
 
 ## Reglas
 - 🚫 **Nunca pushear directo a `main`.** Todo entra por Pull Request con el CI en verde.
+  > GitHub **no** puede hacer cumplir esta regla en este repo: la protección de ramas en repos privados requiere GitHub Pro/Team. Depende de nosotros, de las reglas de `CLAUDE.md` y de los `deny` de `.claude/settings.json`, que bloquean que Claude haga push a `main` o `--force`.
 - El dueño de un sistema (ver [docs/OWNERS.md](docs/OWNERS.md)) revisa los PRs que lo tocan.
 - El servidor valida todo lo que llega del cliente. Más reglas en [CLAUDE.md](CLAUDE.md).
 
