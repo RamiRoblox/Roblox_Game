@@ -1,0 +1,3 @@
+# Std de Roblox + reglas del proyecto.
+# luau_rules.yml tiene `base: roblox` y además marca wait/spawn/delay como obsoletos (usar task.*).
+std = "luau_rules"

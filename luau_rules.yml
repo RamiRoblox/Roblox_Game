@@ -1,0 +1,31 @@
+# Std extra de Selene (se combina con "roblox" en selene.toml).
+# Marca wait/spawn/delay como obsoletos para que Selene avise: usar task.*.
+base: roblox
+globals:
+  wait:
+    args:
+      - required: false
+        type: number
+    deprecated:
+      message: "Usá task.wait en vez de wait (regla del proyecto, ver CLAUDE.md)"
+      replace:
+        - "task.wait(%...)"
+  spawn:
+    args:
+      - type: function
+      - required: false
+        type: "..."
+    deprecated:
+      message: "Usá task.spawn en vez de spawn (regla del proyecto, ver CLAUDE.md)"
+      replace:
+        - "task.spawn(%...)"
+  delay:
+    args:
+      - type: number
+      - type: function
+      - required: false
+        type: "..."
+    deprecated:
+      message: "Usá task.delay en vez de delay (regla del proyecto, ver CLAUDE.md)"
+      replace:
+        - "task.delay(%...)"

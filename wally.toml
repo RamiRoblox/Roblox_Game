@@ -1,0 +1,10 @@
+[package]
+name = "ramiroblox/roblox-game"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+private = true
+
+# Paquetes compartidos (server + client). Se instalan en Packages/ -> ReplicatedStorage.Packages
+# Ejemplo: Promise = "evaera/promise@4.0.0"
+[dependencies]

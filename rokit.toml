@@ -1,0 +1,10 @@
+# Herramientas del proyecto, con versiones fijadas.
+# Instalar con: rokit install
+# Para actualizar una herramienta: rokit update <nombre> (y commitear este archivo)
+
+[tools]
+rojo = "rojo-rbx/rojo@7.7.1"
+selene = "Kampfkarren/selene@0.32.0"
+stylua = "JohnnyMorganz/StyLua@2.6.0"
+luau-lsp = "JohnnyMorganz/luau-lsp@1.70.1"
+wally = "UpliftGames/wally@0.3.2"

@@ -1,0 +1,31 @@
+# Archivos de lugar de Roblox (el lugar vive en Roblox / Team Create, no en Git)
+*.rbxl
+*.rbxlx
+*.rbxl.lock
+*.rbxlx.lock
+
+# Generados por herramientas
+sourcemap.json
+Packages/
+ServerPackages/
+DevPackages/
+roblox.yml
+
+# Preferencias personales de Claude Code (no se comparten)
+CLAUDE.local.md
+.claude/settings.local.json
+
+# Sistema operativo
+.DS_Store
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Binarios sueltos (las herramientas se instalan con Rokit, no se versionan)
+*.exe
+
+# Editores
+*.swp
+*~
