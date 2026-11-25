@@ -2,7 +2,7 @@
 name: revisar-pr
 description: Revisa en modo solo lectura el Pull Request de un compañero, con foco en la seguridad de los RemoteEvents (never trust the client), cambios que rompan otros sistemas y docs desactualizadas. Usar cuando hay que revisar un PR del equipo.
 argument-hint: "<número de PR>"
-allowed-tools: Bash(gh pr view *) Bash(gh pr diff *) Bash(gh pr checks *) Bash(gh pr list *) Bash(git log *) Bash(git diff *) Bash(git show *) Bash(git fetch *) PowerShell(gh pr view *) PowerShell(gh pr diff *) PowerShell(gh pr checks *) PowerShell(gh pr list *) PowerShell(git log *) PowerShell(git diff *) PowerShell(git show *) PowerShell(git fetch *) Read Grep Glob
+allowed-tools: Bash(gh pr view *) Bash(gh pr diff *) Bash(gh pr checks *) Bash(gh pr list *) Bash(git log *) Bash(git diff *) Bash(git show *) Bash(git fetch *) Bash(gh api user *) PowerShell(gh pr view *) PowerShell(gh pr diff *) PowerShell(gh pr checks *) PowerShell(gh pr list *) PowerShell(git log *) PowerShell(git diff *) PowerShell(git show *) PowerShell(git fetch *) PowerShell(gh api user *) Read Grep Glob
 ---
 
 # /revisar-pr — revisar el PR de un compañero
@@ -14,6 +14,7 @@ Respondé en español. PR: `$ARGUMENTS` (si está vacío, listá los PRs abierto
 1. **Contexto**
    - `gh pr view <n>` (descripción, autor, rama, checklist) y `gh pr checks <n>` (CI).
    - `gh pr diff <n>`.
+   - Si el autor del PR soy yo (`gh api user --jq .login`), avisame: lo tiene que revisar uno de los otros dos.
    - Leé `CLAUDE.md`, `docs/ARCHITECTURE.md`, `docs/OWNERS.md` y el doc de cada sistema tocado (versión de `main`).
 
 2. **Seguridad de los remotes (prioridad 1)** — por cada RemoteEvent/RemoteFunction nuevo o cambiado:
@@ -26,7 +27,7 @@ Respondé en español. PR: `$ARGUMENTS` (si está vacío, listá los PRs abierto
 3. **Roturas en otros sistemas**
    - Cambios en APIs públicas, tipos exportados, nombres de remotes, estructura de datos guardados (¿migración para jugadores existentes?).
    - Buscá con Grep quién usa lo que cambió.
-   - ¿Toca un sistema con otro dueño sin su review?
+   - ¿Pisa trabajo en curso de otro compañero ("En progreso" de `PROJECT_STATE.md` u otros PRs abiertos que tocan los mismos archivos)?
 
 4. **Calidad Luau**: `--!strict`, tipos en la API pública, `task.*` en vez de `wait/spawn/delay`, `GetService`, DataStores con `pcall`, conexiones que se limpian.
 

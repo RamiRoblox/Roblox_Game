@@ -4,6 +4,22 @@
 
 ---
 
+### 2026-11-25 — Place del equipo en la cuenta de H1P3R_10
+- **Decisión:** El place oficial de Arena de AK-47 es "Lugar de H1P3R_10" (placeId `75368429466226`), de la cuenta personal de Roblox **H1P3R_10** (@RamiRoblox). Se comparte con Team Create, y el código entra solo por Rojo desde el repo.
+- **Por qué:** Ya existe y está publicado; es lo más rápido para empezar.
+- **Nota:** El place está en la cuenta personal de H1P3R_10. Si más adelante queremos repartir ganancias automáticamente, hay que mudarlo a un Grupo de Roblox.
+- **Alternativas descartadas:** crear un Grupo de Roblox ya (se puede hacer más adelante).
+
+### 2026-11-25 — Tres codueños, sin dueños por sistema, con revisión cruzada
+- **Decisión:** @RamiRoblox, @TachyonWasTaken y @vFrangi son cocreadores y codueños con el mismo rango. Cualquiera trabaja en cualquier sistema y cada PR lo revisa al menos uno de los otros dos.
+- **Por qué:** Equipo chico y con el mismo rango; los dueños por sistema agregaban burocracia sin beneficio.
+- **Alternativas descartadas:** un dueño por sistema que aprueba los PRs de ese sistema.
+
+### 2026-11-25 — Hook que bloquea `git push` en `main`
+- **Decisión:** `.claude/hooks/block-push-main.sh` (PreToolUse) bloquea cualquier `git push` que Claude intente mientras la rama actual es `main`.
+- **Por qué:** Sin protección de rama (GitHub Free), los `deny` solo frenaban comandos que nombraban `main`; un `git push` a secas estando en `main` pasaba.
+- **Alternativas descartadas:** `deny` de todo `git push` sin argumentos (también bloquearía el push normal de una rama).
+
 ### 2026-11-25 — VS Code usa el StyLua de Rokit
 - **Decisión:** `.vscode/settings.json` tiene `stylua.searchBinaryInPATH: true`, así la extensión formatea con el StyLua fijado en `rokit.toml`.
 - **Por qué:** Por defecto la extensión baja la última versión de StyLua, que puede formatear distinto que la 2.6.0 del CI y dejar el PR en rojo.

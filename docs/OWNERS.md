@@ -1,17 +1,17 @@
-# Dueños de sistemas
+# Equipo y revisiones
 
-> El dueño revisa los PRs que tocan su sistema. Antes de un cambio grande en un sistema ajeno, avisarle.
+> Arena de AK-47 tiene tres cocreadores y codueños, con el **mismo rango**. No hay dueños por sistema.
 
 ## Equipo
-| Miembro | Usuario de GitHub | Rol / foco |
+| Usuario de GitHub | Usuario de Roblox | Rol |
 |---|---|---|
-| Miembro 1 | @RamiRoblox | sin asignar |
-| Miembro 2 | sin asignar | sin asignar |
-| Miembro 3 | sin asignar | sin asignar |
+| @RamiRoblox | H1P3R_10 (dueño del place) | Cocreador / codueño |
+| @TachyonWasTaken | _pendiente_ | Cocreador / codueño |
+| @vFrangi | _pendiente_ | Cocreador / codueño |
 
-## Sistemas
-| Sistema | Dueño | Backup | Doc |
-|---|---|---|---|
-| _(ninguno todavía)_ | sin asignar | sin asignar | — |
+Los usuarios de Roblox hacen falta para darles acceso al place por Team Create (ver [ONBOARDING.md](ONBOARDING.md#5-place-del-equipo-y-team-create)).
 
-<!-- /nuevo-sistema agrega una fila acá. -->
+## Reglas
+1. **Cualquiera trabaja en cualquier sistema.** No hay sistemas "de alguien".
+2. **Revisión cruzada:** cada PR lo revisa y aprueba **al menos uno de los otros dos** antes de unirlo. Nadie une su propio PR sin esa revisión (la única excepción fue la configuración inicial del repo).
+3. **Coordinación:** antes de empezar, mirá "En progreso" en [PROJECT_STATE.md](PROJECT_STATE.md) y los PRs abiertos (`gh pr list`). Si otro ya está tocando el mismo sistema, avisale antes de hacer un cambio grande ahí.

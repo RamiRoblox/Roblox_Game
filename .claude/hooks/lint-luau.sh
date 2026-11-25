@@ -42,7 +42,8 @@ ${out}
 fi
 
 if tool_ok selene; then
-	if ! out="$(selene --display-style quiet "$file" 2>&1)"; then
+	# Formato completo (no "quiet") para que se vea el mensaje de la regla, p. ej. "Usá task.wait ..."
+	if ! out="$(selene --no-summary "$file" 2>&1)"; then
 		report="${report}[Selene] Problemas en ${file}:
 ${out}
 "

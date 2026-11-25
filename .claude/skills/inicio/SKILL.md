@@ -21,8 +21,8 @@ Respondé en español. Seguí estos pasos en orden:
 
 4. **Contexto del sistema**
    - Leé `docs/systems/<Sistema>.md`. Si no existe y el sistema ya tiene código, ofrecé crearlo primero a partir de `docs/systems/_TEMPLATE.md` analizando el código. Si es un sistema nuevo, sugerí `/nuevo-sistema`.
-   - Si el sistema tiene dueño y no soy yo (ver `docs/OWNERS.md` y `git config user.name`), avisame que el dueño tiene que revisar el PR y que los cambios grandes hay que avisarlos antes.
-   - Revisá si alguien más ya trabaja en eso (sección "En progreso" y `gh pr list`).
+   - No hay dueños por sistema: puedo trabajar en cualquiera. Revisá si alguien más ya trabaja en eso (sección "En progreso" y `gh pr list`); si es así, avisame para coordinar antes de un cambio grande.
+   - Recordame que el PR lo tiene que revisar uno de los otros dos (`docs/OWNERS.md`).
 
 5. **Rama**
    - Sugerí un nombre: `feature/<nombre-corto>` o `fix/<nombre-corto>` (minúsculas, guiones).

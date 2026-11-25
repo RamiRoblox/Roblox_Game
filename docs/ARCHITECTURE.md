@@ -3,9 +3,9 @@
 > Mantener al día: si agregás un sistema o un RemoteEvent, actualizá este archivo en el mismo PR.
 
 ## Mapa de sistemas
-| Sistema | Server | Client | Shared | Doc | Dueño |
-|---|---|---|---|---|---|
-| _(ejemplo)_ Hello | `src/server/Main.server.luau` | `src/client/Main.client.luau` | `src/shared/Hello.luau` | — | sin asignar |
+| Sistema | Server | Client | Shared | Doc |
+|---|---|---|---|---|
+| _(ejemplo)_ Hello | `src/server/Main.server.luau` | `src/client/Main.client.luau` | `src/shared/Hello.luau` | — |
 
 <!-- Al crear un sistema con /nuevo-sistema se agrega una fila acá. -->
 
