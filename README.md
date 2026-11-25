@@ -22,11 +22,14 @@ Git (en Windows incluye Git Bash), GitHub CLI (`gh`), Rokit, Roblox Studio y Cla
    ```
 2. **Herramientas:** `rokit install` (aceptá confiar en cada herramienta)
 3. **Paquetes:** `wally install`
-4. **Plugin de Rojo en Studio:** `rojo plugin install`
-5. **Sincronizar:** `rojo serve` → en Studio, Plugins → Rojo → Connect
-6. **Conectar el MCP de Studio a Claude Code:** en Studio, Assistant → **…** → Manage MCP Servers → *Enable Studio as MCP server* → quick connect de **Claude Code**. Reiniciá Claude Code.
+4. **Plugin de Rojo en Studio:** `rojo plugin install` con Studio cerrado (si estaba abierto, reinicialo)
+5. **Sincronizar:** `rojo serve` (puerto 34872) → en Studio, Plugins → Rojo → Connect. La primera vez, hacelo en un **Baseplate nuevo**.
+6. **Conectar el MCP de Studio a Claude Code:** en Studio, Assistant → **…** → Manage MCP Servers → *Enable Studio as MCP server* → quick connect de **Claude Code**. Si Claude Code no ve las herramientas de Studio, reinicialo.
    > No subimos `.mcp.json`: la ruta depende de cada máquina, así que cada uno lo conecta desde Studio.
 7. **Probar:** Play en Studio. En el Output tiene que aparecer `Sincronización OK` del servidor y del cliente.
+8. **VS Code (opcional):** instalá las 4 extensiones recomendadas en `.vscode/extensions.json`.
+
+Si algo falla, mirá **Problemas comunes** en [docs/ONBOARDING.md](docs/ONBOARDING.md#problemas-comunes).
 
 ## Flujo diario
 ```

@@ -4,6 +4,11 @@
 
 ---
 
+### 2026-11-25 — VS Code usa el StyLua de Rokit
+- **Decisión:** `.vscode/settings.json` tiene `stylua.searchBinaryInPATH: true`, así la extensión formatea con el StyLua fijado en `rokit.toml`.
+- **Por qué:** Por defecto la extensión baja la última versión de StyLua, que puede formatear distinto que la 2.6.0 del CI y dejar el PR en rojo.
+- **Alternativas descartadas:** `stylua.styluaPath` con ruta absoluta (cambia en cada máquina).
+
 ### 2026-11-23 — Repo privado sin protección de rama en GitHub
 - **Decisión:** El repo es privado. La regla "nunca pushear directo a `main`" se cumple por convención (README, CLAUDE.md) y con los `deny` de `.claude/settings.json`, no con protección de rama.
 - **Por qué:** GitHub Free no permite proteger ramas ni usar rulesets en repos privados (HTTP 403 al intentarlo).
