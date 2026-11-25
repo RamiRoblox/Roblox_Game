@@ -35,6 +35,6 @@ Respondé en español. Seguí estos pasos en orden y frená si algo falla:
 
 6. **Push**: `git push -u origin <rama>`. Nunca a `main`, nunca `--force`.
 
-7. **PR**: ofrecé abrirlo con `gh pr create --base main --fill` o con título y cuerpo armados según `.github/pull_request_template.md` (qué cambia, sistema, cómo se testeó, checklist). Si el sistema tiene dueño (`docs/OWNERS.md`) y no soy yo, sugerí pedirle review (`--reviewer <usuario>`).
+7. **PR**: ofrecé abrirlo con `gh pr create --base main --fill` o con título y cuerpo armados según `.github/pull_request_template.md` (qué cambia, sistema, cómo se testeó, checklist). Siempre sugerí pedir review a uno de los otros dos del equipo (`docs/OWNERS.md`; mi usuario sale de `gh api user --jq .login`), con `--reviewer` y su usuario de GitHub. Recordá que el PR no se une hasta que uno de ellos lo apruebe.
 
 8. Resumí: rama, commit, link al PR y qué quedó pendiente.

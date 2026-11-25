@@ -2,7 +2,7 @@
 
 > Copiar este archivo como `docs/systems/<Sistema>.md`. Mantenerlo corto y al día.
 
-- **Dueño:** sin asignar
+- **Creado por:** @usuario-de-github (no es dueño: cualquiera del equipo puede trabajar acá)
 - **Estado:** idea / en progreso / estable
 - **Última actualización:** AAAA-MM-DD
 

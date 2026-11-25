@@ -3,8 +3,9 @@
 Contexto compartido para las 3 instancias de Claude Code del equipo. Respondé siempre en **español**.
 
 ## Proyecto
-- **Juego:** [NOMBRE DEL JUEGO] — [descripción corta, completar].
-- **Equipo:** 3 personas, cada una con Claude Code. Dueños de sistemas en `docs/OWNERS.md`.
+- **Juego:** Arena de AK-47 (descripción pendiente).
+- **Equipo:** 3 cocreadores y codueños con el mismo rango (@RamiRoblox, @TachyonWasTaken, @vFrangi), cada uno con Claude Code. No hay dueños por sistema. Ver `docs/OWNERS.md`.
+- **Place del equipo:** "Lugar de H1P3R_10", placeId `75368429466226`, de la cuenta de Roblox H1P3R_10, compartido por Team Create.
 - **Stack:** Luau + **Rojo** (código en `src/` ↔ Studio) + **Roblox Studio MCP** (playtest, Output, escena) + **Git/GitHub** (ramas y PRs).
 - El código vive en Git. El arte, los mapas y la UI hecha a mano viven en el lugar de Studio (Team Create). Rojo tiene `$ignoreUnknownInstances` para no borrarlos.
 
@@ -33,12 +34,12 @@ stylua src               # formatear (stylua --check src para solo verificar)
 - `docs/ARCHITECTURE.md` — mapa de sistemas, tabla de RemoteEvents y flujo cliente↔servidor.
 - `docs/systems/<Sistema>.md` — doc de cada sistema (plantilla: `docs/systems/_TEMPLATE.md`).
 - `docs/DECISIONS.md` — decisiones tomadas y por qué.
-- `docs/OWNERS.md` — quién es dueño de cada sistema.
+- `docs/OWNERS.md` — el equipo y la regla de revisión cruzada.
 
 ## Reglas de trabajo (obligatorias)
 1. **Antes de modificar un sistema**, leer `docs/PROJECT_STATE.md` y `docs/systems/<Sistema>.md`. Si el doc no existe, **crearlo primero** a partir de la plantilla, analizando el código actual.
 2. **Nunca trabajar directo en `main`.** Siempre en una rama (`feature/<nombre>` o `fix/<nombre>`) y unir con Pull Request. Nunca `git push` a `main` ni `--force` sobre ramas ajenas.
-3. **Sistemas con dueño:** no hacer cambios grandes en un sistema ajeno sin avisar. El dueño revisa el PR.
+3. **Sin dueños por sistema, con revisión cruzada:** cualquiera trabaja en cualquier sistema. Cada PR lo revisa al menos uno de los otros dos antes de unirlo. Si otro ya está tocando el mismo sistema ("En progreso" o un PR abierto), avisarle antes de un cambio grande.
 4. **Al terminar una tarea**, actualizar `docs/PROJECT_STATE.md` y el doc del sistema tocado. Si se decidió algo de arquitectura, sumar una entrada a `docs/DECISIONS.md`. Si cambió un RemoteEvent, actualizar la tabla de `docs/ARCHITECTURE.md`.
 5. **Errores repetidos:** cuando la IA comete el mismo error dos veces, la corrección se agrega a la sección "Errores aprendidos" de este archivo (en un PR).
 6. Flujo diario: `/inicio` → rama → trabajar → `/cierre` → PR. Para sistemas nuevos: `/nuevo-sistema`. Para revisar a un compañero: `/revisar-pr`.
@@ -58,10 +59,12 @@ stylua src               # formatear (stylua --check src para solo verificar)
 - DataStores **siempre dentro de `pcall`**, con reintentos, `UpdateAsync` para datos críticos y guardado en `PlayerRemoving` + `game:BindToClose`.
 - Nada de `RemoteFunction` del servidor al cliente (`InvokeClient`): el cliente puede colgar el servidor.
 - Conexiones: desconectar o limpiar lo que se crea por jugador cuando el jugador se va.
+- **El código se edita solo en `src/`**, nunca en los scripts sincronizados dentro de Studio: Rojo los pisa con lo del repo. Con Rojo conectado al place del equipo (Team Create), los cambios los ven los tres al instante.
 - **Cambios chicos y verificables:** después de cada cambio, playtest con el MCP de Studio (iniciar Play, revisar el Output/consola, detener) y arreglar errores y warnings antes de seguir.
 
 ## Calidad
 - Un hook de Claude Code (`.claude/hooks/lint-luau.sh`) corre StyLua y Selene después de cada edición de un `.luau`. Si Selene marca algo, arreglarlo.
+- Otro hook (`.claude/hooks/block-push-main.sh`) bloquea cualquier `git push` mientras la rama actual sea `main`, aunque el comando no nombre `main`.
 - Selene usa `luau_rules.yml` (std de Roblox + `wait`/`spawn`/`delay` marcados como obsoletos).
 - El CI de GitHub corre `selene src` y `stylua --check src` en cada PR. Un PR en rojo no se une.
 
