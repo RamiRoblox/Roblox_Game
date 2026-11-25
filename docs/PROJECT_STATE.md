@@ -11,7 +11,7 @@
 ## En progreso (quién / rama)
 | Tarea | Quién | Rama |
 |---|---|---|
-| — | — | — |
+| Prueba del flujo del equipo (PR en draft, NO se une; se borra al terminar) | @RamiRoblox | `test/flujo-equipo` |
 
 ## Próximo
 - [ ] **Empezar a desarrollar Arena de AK-47**: crear el primer sistema con `/nuevo-sistema`.
@@ -25,6 +25,7 @@
 | — | — | — | — |
 
 ## Última actualización
+- 2026-11-25 — Prueba del flujo de punta a punta (`test/flujo-equipo`, no se une).
 - 2026-11-25 — Arreglos de la auditoría del entorno (`fix/post-auditoria`).
 - 2026-11-25 — Setup y verificación del entorno (`setup/entorno`).
 - 2026-11-23 — Estructura inicial del proyecto (`main`).
