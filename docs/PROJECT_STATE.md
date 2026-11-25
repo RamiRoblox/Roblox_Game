@@ -5,6 +5,7 @@
 ## Hecho
 - Estructura inicial del repo: Rojo, Rokit, Wally, Selene, StyLua, luau-lsp, CI y configuración compartida de Claude Code.
 - Scripts de ejemplo en `src/server`, `src/client` y `src/shared` para comprobar la sincronización.
+- Entorno verificado de punta a punta (Rokit → Rojo 7.7.1 + plugin → Studio, VS Code con extensiones, MCP de Studio con playtest). Onboarding con sección "Problemas comunes".
 
 ## En progreso (quién / rama)
 | Tarea | Quién | Rama |
@@ -23,4 +24,5 @@
 | — | — | — | — |
 
 ## Última actualización
+- 2026-11-25 — Setup y verificación del entorno (`setup/entorno`).
 - 2026-11-23 — Estructura inicial del proyecto (`main`).
