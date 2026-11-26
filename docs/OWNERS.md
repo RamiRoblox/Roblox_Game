@@ -13,5 +13,5 @@ Los usuarios de Roblox hacen falta para darles acceso al place por Team Create (
 
 ## Reglas
 1. **Cualquiera trabaja en cualquier sistema.** No hay sistemas "de alguien".
-2. **Revisión cruzada:** cada PR lo revisa y aprueba **al menos uno de los otros dos** antes de unirlo. Nadie une su propio PR sin esa revisión (la única excepción fue la configuración inicial del repo).
+2. **Revisión cruzada:** cada PR lo revisa y aprueba **al menos uno de los otros dos** antes de unirlo. Nadie une su propio PR sin esa revisión (la única excepción fue la configuración inicial del repo). GitHub lo exige desde el 2026-11-25: `main` pide 1 aprobación y el CI en verde (los admins pueden saltarlo, pero no deben).
 3. **Coordinación:** antes de empezar, mirá "En progreso" en [PROJECT_STATE.md](PROJECT_STATE.md) y los PRs abiertos (`gh pr list`). Si otro ya está tocando el mismo sistema, avisale antes de hacer un cambio grande ahí.

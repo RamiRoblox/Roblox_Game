@@ -8,8 +8,21 @@
 
 input="$(cat)"
 
-# ¿El comando tiene un `git push`? (también `git -C dir push`, `git -c x=y push`)
-if ! printf '%s' "$input" | grep -Eq '(^|[^[:alnum:]_-])git([[:space:]]+-[[:alnum:]]+([[:space:]]+[^[:space:]-][^[:space:]]*)?)*[[:space:]]+push([^[:alnum:]_-]|$)'; then
+# Sacar solo el valor de "command" del JSON (así no se frena por un "git push" que aparece
+# en otro campo). Si no hay comando, no hay nada que bloquear.
+cmd="$(printf '%s' "$input" \
+	| grep -Eo '"command"[[:space:]]*:[[:space:]]*"([^"\\]|\\.)*"' \
+	| head -n 1 \
+	| sed -E 's/^"command"[[:space:]]*:[[:space:]]*"//; s/"$//')"
+[ -n "$cmd" ] || exit 0
+
+# ¿Hay un `git push` que se EJECUTA? Tiene que estar al principio del comando o después de
+# ; & | ( ` (o un salto de línea), o dentro de `bash -c "..."` / `pwsh -Command "..."`.
+# Así `echo "git push"` o un mensaje de commit que nombra "git push" no se bloquean.
+# También se detecta `git -C dir push` y `git -c x=y push`.
+sep='(^|[;&|(`]|\\n|(-c|-Command)[[:space:]]+\\?[^[:alnum:][:space:]])'
+push='[[:space:]]*git([[:space:]]+-[[:alnum:]]+([[:space:]]+[^[:space:]-][^[:space:]]*)?)*[[:space:]]+push([^[:alnum:]_-]|$)'
+if ! printf '%s' "$cmd" | grep -Eq "${sep}${push}"; then
 	exit 0
 fi
 

@@ -4,6 +4,13 @@
 
 ---
 
+### 2026-11-25 — Protección de `main` en GitHub (repo hoy público)
+- **Decisión:** `main` exige PR, CI "Selene + StyLua" en verde y 1 aprobación; sin force push ni borrado. `enforce_admins` está apagado: @RamiRoblox puede saltarla en una emergencia, pero no debe unir su propio PR (ver `docs/OWNERS.md`).
+- **Por qué:** La prueba del flujo mostró que la revisión cruzada y el CI verde eran solo convención. El repo figuraba como privado, pero hoy es **público** y por eso GitHub Free permite proteger la rama.
+- **Repo público, a propósito:** @RamiRoblox decidió el 2026-11-25 dejarlo **público**, lo que reemplaza la entrada del 2026-11-23 ("repo privado"). Consecuencia: el código y los remotes de `src/` son visibles para cualquiera, así que **nunca se suben secretos, claves ni tokens** (ni en commits ni en archivos de config). Si algún día se vuelve privado en GitHub Free, la protección de `main` deja de funcionar.
+- **Hook de push:** `block-push-main.sh` ahora solo mira el campo `command` y no bloquea comandos que solo mencionan "git push" (p. ej. `echo "git push"` o un mensaje de commit).
+- **Alternativas descartadas:** dejarlo solo como convención.
+
 ### 2026-11-25 — Place del equipo en la cuenta de H1P3R_10
 - **Decisión:** El place oficial de Arena de AK-47 es "Lugar de H1P3R_10" (placeId `75368429466226`), de la cuenta personal de Roblox **H1P3R_10** (@RamiRoblox). Se comparte con Team Create, y el código entra solo por Rojo desde el repo.
 - **Por qué:** Ya existe y está publicado; es lo más rápido para empezar.
@@ -25,7 +32,7 @@
 - **Por qué:** Por defecto la extensión baja la última versión de StyLua, que puede formatear distinto que la 2.6.0 del CI y dejar el PR en rojo.
 - **Alternativas descartadas:** `stylua.styluaPath` con ruta absoluta (cambia en cada máquina).
 
-### 2026-11-23 — Repo privado sin protección de rama en GitHub
+### 2026-11-23 — Repo privado sin protección de rama en GitHub _(reemplazada: ver 2026-11-25, el repo hoy es público y `main` está protegida)_
 - **Decisión:** El repo es privado. La regla "nunca pushear directo a `main`" se cumple por convención (README, CLAUDE.md) y con los `deny` de `.claude/settings.json`, no con protección de rama.
 - **Por qué:** GitHub Free no permite proteger ramas ni usar rulesets en repos privados (HTTP 403 al intentarlo).
 - **Alternativas descartadas:** repo público (expone el código y los remotes), pagar GitHub Pro/Team (se puede reconsiderar más adelante).

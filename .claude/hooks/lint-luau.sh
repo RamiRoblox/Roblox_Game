@@ -32,6 +32,7 @@ tool_ok() {
 }
 
 report=""
+missing=""
 
 if tool_ok stylua; then
 	if ! out="$(stylua "$file" 2>&1)"; then
@@ -39,6 +40,8 @@ if tool_ok stylua; then
 ${out}
 "
 	fi
+else
+	missing="${missing} stylua"
 fi
 
 if tool_ok selene; then
@@ -48,11 +51,18 @@ if tool_ok selene; then
 ${out}
 "
 	fi
+else
+	missing="${missing} selene"
 fi
 
 if [ -n "$report" ]; then
 	printf '%s\nArreglá estos problemas antes de seguir.\n' "$report" >&2
 	exit 2
+fi
+
+# Falta una herramienta: no se formateó/lintó. Avisar (systemMessage, sin bloquear) en vez de callar.
+if [ -n "$missing" ]; then
+	printf '{"systemMessage":"Aviso: no se encontró%s, así que este archivo NO se formateó ni se lintó. Corré rokit install (ver docs/ONBOARDING.md, paso 3) y reiniciá la terminal."}\n' "$missing"
 fi
 
 exit 0

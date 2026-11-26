@@ -55,7 +55,8 @@ Si algo falla, mirá **Problemas comunes** en [docs/ONBOARDING.md](docs/ONBOARDI
 
 ## Reglas
 - 🚫 **Nunca pushear directo a `main`.** Todo entra por Pull Request con el CI en verde.
-  > GitHub **no** puede hacer cumplir esta regla en este repo: la protección de ramas en repos privados requiere GitHub Pro/Team. Depende de nosotros, de las reglas de `CLAUDE.md` y de los `deny` de `.claude/settings.json`, que bloquean que Claude haga push a `main` o `--force`, y de un hook que bloquea cualquier `git push` mientras la rama actual sea `main`.
+  > `main` tiene **protección de rama en GitHub**: exige PR, el CI "Selene + StyLua" en verde y **1 aprobación** de otro del equipo; no permite force push ni borrar la rama. Los admins (@RamiRoblox) pueden saltarla, así que no la usen para unir su propio PR. Además, Claude Code tiene los `deny` de `.claude/settings.json` (sin push a `main` ni `--force`) y un hook que bloquea `git push` mientras la rama actual sea `main`.
+  > Nota: el repo es **público** a propósito (ver `docs/DECISIONS.md`): la protección de ramas en GitHub Free solo existe así, y por eso **nunca se suben secretos, claves ni tokens**.
 - No hay dueños por sistema: cualquiera trabaja en cualquier sistema. **Cada PR lo revisa al menos uno de los otros dos** (ver [docs/OWNERS.md](docs/OWNERS.md)).
 - El servidor valida todo lo que llega del cliente. Más reglas en [CLAUDE.md](CLAUDE.md).
 
