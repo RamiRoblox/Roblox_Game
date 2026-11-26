@@ -7,6 +7,7 @@
 - Scripts de ejemplo en `src/server`, `src/client` y `src/shared` para comprobar la sincronización.
 - Entorno verificado de punta a punta (Rokit → Rojo 7.7.1 + plugin → Studio, VS Code con extensiones, MCP de Studio con playtest). Onboarding con sección "Problemas comunes".
 - **Setup del entorno terminado** (auditoría del 2026-11-25): nombre del juego (Arena de AK-47), equipo de 3 codueños con revisión cruzada, place del equipo documentado (Team Create), hook que bloquea `git push` en `main`, hook de Selene con mensajes completos.
+- **Prueba del flujo del equipo** (2026-11-25): ciclo completo verificado (hook, Rojo → Studio, playtest, CI, `/revisar-pr`). Arreglos: onboarding documenta login y diálogo de confianza de Claude Code; el hook de lint avisa si faltan StyLua/Selene en vez de callar.
 
 ## En progreso (quién / rama)
 | Tarea | Quién | Rama |
@@ -25,6 +26,7 @@
 | — | — | — | — |
 
 ## Última actualización
+- 2026-11-25 — Arreglos de la prueba del flujo: confianza/login en onboarding y aviso del hook (`fix/onboarding-confianza`).
 - 2026-11-25 — Arreglos de la auditoría del entorno (`fix/post-auditoria`).
 - 2026-11-25 — Setup y verificación del entorno (`setup/entorno`).
 - 2026-11-23 — Estructura inicial del proyecto (`main`).

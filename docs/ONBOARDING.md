@@ -90,6 +90,9 @@ No hay `.mcp.json` en el repo porque la ruta cambia en cada máquina. Cada uno l
 6. Si reiniciás Studio y el MCP deja de responder, revisá que **Enable Studio as MCP server** siga activo.
 
 ## 7. Claude Code
+- **Iniciá sesión** la primera vez (app de escritorio, o `claude` en la terminal y después `/login`).
+- **Aceptá el diálogo de confianza de la carpeta.** La primera vez que abrís Claude Code dentro del clon, pregunta si confiás en la carpeta: respondé que **sí**. Si no lo aceptás, Claude Code **ignora los permisos de `.claude/settings.json`** ("Ignoring ... permissions.allow entries ... this workspace has not been trusted") y los hooks de StyLua/Selene y de `git push` pueden no correr. Tampoco alcanza con usar `claude -p` en un clon recién bajado: primero abrilo una vez de forma interactiva.
+- **Comprobá que todo cargó** (una sola vez, en el clon): escribí `/inicio` y verificá que aparezca. Después editá un `.luau` a propósito con mal formato (por ejemplo `local x=1`) y comprobá que el hook lo reformatea. Si el hook avisa "no se encontró stylua/selene", corré `rokit install` (paso 3).
 - La configuración compartida ya viene en el repo: `CLAUDE.md`, `.claude/settings.json` (permisos, hook de StyLua/Selene y hook que bloquea `git push` estando en `main`) y las skills `/inicio`, `/cierre`, `/nuevo-sistema`, `/revisar-pr`.
 - Preferencias personales: creá `CLAUDE.local.md` en la raíz (no se sube). Ejemplo: "Soy X, hoy trabajo en la UI, explicame los cambios paso a paso".
 - Permisos personales extra: `.claude/settings.local.json` (tampoco se sube).
@@ -114,6 +117,9 @@ No hay `.mcp.json` en el repo porque la ruta cambia en cada máquina. Cada uno l
 | Síntoma | Causa | Solución |
 |---|---|---|
 | `code: command not found` aunque VS Code está instalado y su carpeta `bin` está en el PATH | VS Code se instaló o actualizó **mientras otra copia estaba abierta**: la instalación queda a medias, con archivos `new_Code.exe`, `bin\new_code.cmd` y un archivo `updating_version`, y no existe `bin\code.cmd`. | Cerrá **todas** las ventanas de VS Code (revisá en el Administrador de tareas que no quede ningún `Code.exe`), volvé a correr el instalador de https://code.visualstudio.com con la opción **Add to PATH** marcada y abrí una terminal nueva. |
+| Claude Code dice "Ignoring ... permissions.allow entries ... workspace has not been trusted", o los hooks no corren | No se aceptó el diálogo de confianza de la carpeta. | Abrí Claude Code de forma interactiva en el clon y aceptá la confianza (paso 7). |
+| Un aviso "StyLua/Selene no se encontraron" después de editar un `.luau` | El hook no puede formatear ni lintear porque falta `rokit install` (o el PATH de Rokit). | `rokit install` y reiniciá la terminal / Claude Code. |
+| En Play aparecen `Script timeout: exhausted allowed execution time` de `CoreGui...` (ChromeService, SelfieView, etc.) | Scripts internos de Roblox que se retrasan al arrancar el playtest en Studio; no son del proyecto. | Se pueden ignorar si no hay errores de `src/`. |
 | `Failed to find tool ...` al correr `rojo`, `selene`, etc. | No se corrió `rokit install`, o se respondió que no a la pregunta de confianza. | `rokit install` en la carpeta del repo y aceptá. |
 | `git commit` falla con "Please tell me who you are" | Falta configurar Git. | Paso 2.1 (`git config --global user.name` / `user.email`). |
 | Claude Code dice "No se puede hacer git push estando en main" | Es a propósito: un hook bloquea pushear a `main`. | Creá una rama (`git switch -c feature/<nombre>`), pusheá esa y abrí un PR. |
