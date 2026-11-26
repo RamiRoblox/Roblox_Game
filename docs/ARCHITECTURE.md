@@ -6,6 +6,7 @@
 | Sistema | Server | Client | Shared | Doc |
 |---|---|---|---|---|
 | _(ejemplo)_ Hello | `src/server/Main.server.luau` | `src/client/Main.client.luau` | `src/shared/Hello.luau` | — |
+| Armas | `src/server/WeaponService.luau` | `src/client/WeaponController.luau`, `src/client/WeaponEffects.luau` | `src/shared/Weapons/WeaponConfig.luau` | [Armas](systems/Armas.md) |
 
 <!-- Al crear un sistema con /nuevo-sistema se agrega una fila acá. -->
 
@@ -20,7 +21,8 @@
 ## RemoteEvents / RemoteFunctions
 | Nombre | Tipo | Dirección | Argumentos | Validación en el servidor | Sistema |
 |---|---|---|---|---|---|
-| — | — | — | — | — | — |
+| `WeaponFire` | RemoteEvent | C→S | `aimPoint: Vector3` | Tipo, NaN/inf, vivo con un arma equipada, cadencia por jugador, cañón cerca del cuerpo; el origen lo pone el servidor | Armas |
+| `WeaponEffect` | RemoteEvent | S→All | `userId, toolName, origin, endPosition, normal, hitHumanoid` | Lo manda el servidor (el cliente chequea tipos) | Armas |
 
 Dirección: `C→S` (cliente pide), `S→C` (servidor avisa), `S→All` (broadcast).
 Columna "Validación": qué chequea el servidor (tipos, rangos, distancia, cooldown, si tiene el ítem/plata). **Si está vacía, el remote no se une.**

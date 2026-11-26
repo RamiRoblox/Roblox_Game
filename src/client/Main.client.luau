@@ -4,5 +4,8 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Hello = require(ReplicatedStorage.Shared.Hello)
+local WeaponController = require(script.Parent.WeaponController)
 
 print(Hello.greet("el cliente"))
+
+WeaponController.start()
