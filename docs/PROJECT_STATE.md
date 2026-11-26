@@ -17,7 +17,6 @@
 ## Próximo
 - [ ] **Empezar a desarrollar Arena de AK-47**: crear el primer sistema con `/nuevo-sistema`.
 - [ ] H1P3R_10 activa Team Create y suma las cuentas de Roblox de @TachyonWasTaken y @vFrangi (completar la tabla de `docs/ONBOARDING.md` y `docs/OWNERS.md`).
-- [ ] **Decidir si el repo es público o privado** (hoy es público; en GitHub Free la protección de `main` solo funciona siendo público; ver `docs/DECISIONS.md`).
 - [ ] Escribir la descripción corta del juego (CLAUDE.md, README.md).
 - [ ] Borrar `src/shared/Hello.luau` y los scripts de ejemplo cuando exista código real.
 

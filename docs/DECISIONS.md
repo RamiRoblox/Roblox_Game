@@ -7,7 +7,7 @@
 ### 2026-11-25 — Protección de `main` en GitHub (repo hoy público)
 - **Decisión:** `main` exige PR, CI "Selene + StyLua" en verde y 1 aprobación; sin force push ni borrado. `enforce_admins` está apagado: @RamiRoblox puede saltarla en una emergencia, pero no debe unir su propio PR (ver `docs/OWNERS.md`).
 - **Por qué:** La prueba del flujo mostró que la revisión cruzada y el CI verde eran solo convención. El repo figuraba como privado, pero hoy es **público** y por eso GitHub Free permite proteger la rama.
-- **Atención:** esto contradice la entrada del 2026-11-23 ("repo privado"). Un repo público expone el código; si se vuelve privado en GitHub Free, la protección deja de funcionar. Hay que decidir conscientemente cuál de las dos cosas se prefiere.
+- **Repo público, a propósito:** @RamiRoblox decidió el 2026-11-25 dejarlo **público**, lo que reemplaza la entrada del 2026-11-23 ("repo privado"). Consecuencia: el código y los remotes de `src/` son visibles para cualquiera, así que **nunca se suben secretos, claves ni tokens** (ni en commits ni en archivos de config). Si algún día se vuelve privado en GitHub Free, la protección de `main` deja de funcionar.
 - **Hook de push:** `block-push-main.sh` ahora solo mira el campo `command` y no bloquea comandos que solo mencionan "git push" (p. ej. `echo "git push"` o un mensaje de commit).
 - **Alternativas descartadas:** dejarlo solo como convención.
 
