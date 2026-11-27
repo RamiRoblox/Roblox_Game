@@ -137,19 +137,14 @@ local function findTool(shooter: Model?, toolName: string): Tool?
 	return nil
 end
 
--- Fogonazo + luz + sonido + cartucho en el cañón. Se usa al disparar (el tirador lo ve al instante)
--- y cuando otro jugador dispara. `origin` es el respaldo si no se encuentra el arma.
-function WeaponEffects.playMuzzle(shooter: Model?, toolName: string, origin: Vector3): ()
+-- Fogonazo + luz + sonido en `muzzle` y cartucho saliendo de `ejection`. El tirador local lo usa con los
+-- attachments de su viewmodel. `origin` es el respaldo si no hay attachment de cañón.
+function WeaponEffects.playMuzzleFrom(muzzle: Attachment?, ejection: Attachment?, toolName: string, origin: Vector3): ()
 	local stats = WeaponConfig.get(toolName)
 	if not stats then
 		return
 	end
-	local tool = findTool(shooter, toolName)
-	local handle = if tool then tool:FindFirstChild("Handle") else nil
-	local muzzle = if handle then handle:FindFirstChild("Muzzle_Att") else nil
-	local ejection = if handle then handle:FindFirstChild("Ejection_Att") else nil
-
-	if muzzle and muzzle:IsA("Attachment") then
+	if muzzle then
 		flashAt(muzzle)
 		playFireSound(muzzle, stats.fireSoundId)
 	else
@@ -157,9 +152,24 @@ function WeaponEffects.playMuzzle(shooter: Model?, toolName: string, origin: Vec
 		flashAt(fallback)
 		playFireSound(fallback, stats.fireSoundId)
 	end
-	if ejection and ejection:IsA("Attachment") then
+	if ejection then
 		ejectCasing(ejection)
 	end
+end
+
+-- Lo mismo, buscando el cañón en la Tool que tiene en la mano `shooter`. Se usa cuando dispara otro jugador
+-- (o si el tirador local no tiene viewmodel). `origin` es el respaldo si no se encuentra el arma.
+function WeaponEffects.playMuzzle(shooter: Model?, toolName: string, origin: Vector3): ()
+	local tool = findTool(shooter, toolName)
+	local handle = if tool then tool:FindFirstChild("Handle") else nil
+	local muzzle = if handle then handle:FindFirstChild("Muzzle_Att") else nil
+	local ejection = if handle then handle:FindFirstChild("Ejection_Att") else nil
+	WeaponEffects.playMuzzleFrom(
+		if muzzle and muzzle:IsA("Attachment") then muzzle else nil,
+		if ejection and ejection:IsA("Attachment") then ejection else nil,
+		toolName,
+		origin
+	)
 end
 
 local function impactAt(position: Vector3, normal: Vector3, hitHumanoid: boolean)

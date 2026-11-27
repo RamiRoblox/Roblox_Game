@@ -4,6 +4,11 @@
 
 ---
 
+### 2026-11-27 — Viewmodel de primera persona hecho por código
+- **Decisión:** Con el arma en la mano el juego pasa a primera persona y el jugador ve una copia local del arma con brazos ("viewmodel") pegada a la cámara. Todo el movimiento (balanceo, paso, retroceso, apuntar, recarga, inspección, correr) es procedural, con resortes, y todos los valores están en `ViewmodelConfig`. Los brazos son la mano + un antebrazo recto alineado con el arma (sin codo). La munición la cuenta el servidor en el atributo `Municion` de la Tool.
+- **Por qué:** Se ajusta todo desde un archivo (y en vivo en Studio) sin subir animaciones; el servidor sigue validando el disparo desde la Tool real, así el viewmodel no abre trampas.
+- **Alternativas descartadas:** animaciones hechas en el editor de Roblox (hay que subirlas y no se ajustan con valores); brazos con IK de hombro y codo (se veían torcidos).
+
 ### 2026-11-25 — Place del equipo en la cuenta de H1P3R_10
 - **Decisión:** El place oficial de Arena de AK-47 es "Lugar de H1P3R_10" (placeId `75368429466226`), de la cuenta personal de Roblox **H1P3R_10** (@RamiRoblox). Se comparte con Team Create, y el código entra solo por Rojo desde el repo.
 - **Por qué:** Ya existe y está publicado; es lo más rápido para empezar.

@@ -6,7 +6,7 @@
 | Sistema | Server | Client | Shared | Doc |
 |---|---|---|---|---|
 | _(ejemplo)_ Hello | `src/server/Main.server.luau` | `src/client/Main.client.luau` | `src/shared/Hello.luau` | — |
-| Armas | `src/server/WeaponService.luau` | `src/client/WeaponController.luau`, `src/client/WeaponEffects.luau` | `src/shared/Weapons/WeaponConfig.luau` | [Armas](systems/Armas.md) |
+| Armas | `src/server/WeaponService.luau` | `src/client/WeaponController.luau`, `WeaponViewmodel.luau`, `WeaponMotion.luau`, `WeaponAnimations.luau`, `WeaponTuning.luau`, `WeaponEffects.luau` | `src/shared/Weapons/WeaponConfig.luau`, `ViewmodelConfig.luau` | [Armas](systems/Armas.md) |
 
 <!-- Al crear un sistema con /nuevo-sistema se agrega una fila acá. -->
 
@@ -21,7 +21,8 @@
 ## RemoteEvents / RemoteFunctions
 | Nombre | Tipo | Dirección | Argumentos | Validación en el servidor | Sistema |
 |---|---|---|---|---|---|
-| `WeaponFire` | RemoteEvent | C→S | `aimPoint: Vector3` | Tipo, NaN/inf, vivo con un arma equipada, cadencia por jugador, cañón cerca del cuerpo; el origen lo pone el servidor | Armas |
+| `WeaponFire` | RemoteEvent | C→S | `aimPoint: Vector3` | Tipo, NaN/inf, vivo con un arma equipada, munición > 0 y no recargando, cadencia por "turnos" (margen 0.1 s), cañón cerca del cuerpo; el origen lo pone el servidor | Armas |
+| `WeaponReload` | RemoteEvent | C→S | — | Vivo con un arma equipada, no recargando, cargador no lleno; el servidor llena el cargador pasado `reloadTime` (se cancela si guarda el arma) | Armas |
 | `WeaponEffect` | RemoteEvent | S→All | `userId, toolName, origin, endPosition, normal, hitHumanoid` | Lo manda el servidor (el cliente chequea tipos) | Armas |
 
 Dirección: `C→S` (cliente pide), `S→C` (servidor avisa), `S→All` (broadcast).

@@ -12,7 +12,7 @@ local WeaponConfig = require(ReplicatedStorage.Shared.Weapons.WeaponConfig)
 local MAX_COORD = 1e6 -- cualquier coordenada más grande (o NaN/inf) se descarta
 local MIN_AIM_DISTANCE = 0.5 -- punto de mira demasiado pegado al cañón
 local MAX_MUZZLE_DISTANCE = 12 -- el cañón no puede estar lejos del cuerpo del jugador
-local FIRE_TOLERANCE = 0.85 -- margen por jitter de red sobre el intervalo entre disparos
+local FIRE_JITTER = 0.1 -- segundos de margen para tiros que llegan amontonados por la red
 
 local HAND_IK_NAME = "WeaponLeftHandIK"
 local HAND_POLE_NAME = "WeaponLeftHandPole"
@@ -20,7 +20,8 @@ local HAND_POLE_NAME = "WeaponLeftHandPole"
 local WeaponService = {}
 
 local effectRemote: RemoteEvent? = nil
-local lastFireTime: { [Player]: number } = {}
+local fireSchedule: { [Player]: number } = {} -- "turno" del último disparo aceptado de cada jugador
+local reloadTokens: { [Tool]: {} } = {} -- recarga en curso de cada Tool (si cambia el token, se canceló)
 local rng = Random.new()
 local rayParams = RaycastParams.new()
 rayParams.FilterType = Enum.RaycastFilterType.Exclude
@@ -76,6 +77,16 @@ local function canDamage(shooter: Player, victim: Humanoid): boolean
 	return true
 end
 
+-- Balas que le quedan al cargador de la Tool. La primera vez que se usa la Tool arranca llena.
+local function getAmmo(tool: Tool, stats: WeaponConfig.WeaponStats): number
+	local ammo = tool:GetAttribute(WeaponConfig.ammoAttribute)
+	if typeof(ammo) ~= "number" then
+		tool:SetAttribute(WeaponConfig.ammoAttribute, stats.magazineSize)
+		return stats.magazineSize
+	end
+	return ammo
+end
+
 local function onFire(player: Player, aimPoint: any)
 	-- 1) Validar el argumento
 	if typeof(aimPoint) ~= "Vector3" then
@@ -110,15 +121,24 @@ local function onFire(player: Player, aimPoint: any)
 		return
 	end
 
-	-- 3) Cadencia: el servidor manda, no el cliente
-	local now = os.clock()
-	local interval = 60 / stats.fireRate
-	if now - (lastFireTime[player] or 0) < interval * FIRE_TOLERANCE then
+	-- 3) Munición: tiene que quedarle alguna bala y no estar recargando (las cuenta el servidor, no el cliente)
+	local ammo = getAmmo(tool, stats)
+	if ammo <= 0 or reloadTokens[tool] then
 		return
 	end
-	lastFireTime[player] = now
 
-	-- 4) El origen es el cañón real, que tiene que estar cerca del cuerpo
+	-- 4) Cadencia: el servidor manda, no el cliente. Cada tiro aceptado ocupa un "turno" de 60/fireRate segundos.
+	-- La red a veces entrega dos tiros casi juntos: se permite adelantarse hasta FIRE_JITTER segundos, pero en
+	-- promedio nunca se dispara más rápido que la cadencia del arma (un tramposo gana como mucho 1 o 2 tiros).
+	local now = os.clock()
+	local interval = 60 / stats.fireRate
+	local slot = math.max((fireSchedule[player] or -math.huge) + interval, now - FIRE_JITTER)
+	if slot > now + FIRE_JITTER then
+		return
+	end
+	fireSchedule[player] = slot
+
+	-- 5) El origen es el cañón real, que tiene que estar cerca del cuerpo
 	local origin = muzzle.WorldPosition
 	if (origin - root.Position).Magnitude > MAX_MUZZLE_DISTANCE then
 		return
@@ -128,8 +148,9 @@ local function onFire(player: Player, aimPoint: any)
 		return
 	end
 	local direction = applySpread(toTarget.Unit, stats.spreadDegrees)
+	tool:SetAttribute(WeaponConfig.ammoAttribute, ammo - 1)
 
-	-- 5) Raycast. Primero del cuerpo al cañón (si hay una pared en el medio, la bala pega ahí).
+	-- 6) Raycast. Primero del cuerpo al cañón (si hay una pared en el medio, la bala pega ahí).
 	rayParams.FilterDescendantsInstances = { character }
 	local result = Workspace:Raycast(root.Position, origin - root.Position, rayParams)
 	if not result then
@@ -155,9 +176,49 @@ local function onFire(player: Player, aimPoint: any)
 		end
 	end
 
-	-- 6) Avisar a todos para que dibujen la bala y los efectos
+	-- 7) Avisar a todos para que dibujen la bala y los efectos
 	if effectRemote then
 		effectRemote:FireAllClients(player.UserId, tool.Name, origin, endPosition, normal, hitHumanoid)
+	end
+end
+
+-- El cliente pide recargar (sin argumentos). El servidor valida y, pasado `reloadTime`, llena el cargador.
+local function onReload(player: Player)
+	local character = player.Character
+	local humanoid = if character then character:FindFirstChildOfClass("Humanoid") else nil
+	if not character or not humanoid or humanoid.Health <= 0 then
+		return
+	end
+	local tool = character:FindFirstChildOfClass("Tool")
+	local stats = if tool then WeaponConfig.get(tool.Name) else nil
+	if not tool or not stats then
+		return
+	end
+	-- Ya recargando o con el cargador lleno: no hace nada (esto también frena el spam del remote).
+	if reloadTokens[tool] or getAmmo(tool, stats) >= stats.magazineSize then
+		return
+	end
+
+	local token = {}
+	reloadTokens[tool] = token
+	tool:SetAttribute(WeaponConfig.reloadingAttribute, true)
+	task.delay(stats.reloadTime, function()
+		if reloadTokens[tool] ~= token then
+			return -- se canceló: guardó el arma en el medio
+		end
+		reloadTokens[tool] = nil
+		tool:SetAttribute(WeaponConfig.reloadingAttribute, false)
+		if tool.Parent == character and humanoid.Health > 0 then
+			tool:SetAttribute(WeaponConfig.ammoAttribute, stats.magazineSize)
+		end
+	end)
+end
+
+-- Guardar el arma en medio de la recarga la cancela (el cargador queda como estaba).
+local function cancelReload(tool: Tool)
+	if reloadTokens[tool] then
+		reloadTokens[tool] = nil
+		tool:SetAttribute(WeaponConfig.reloadingAttribute, false)
 	end
 end
 
@@ -205,12 +266,15 @@ end
 -- Las conexiones cuelgan del personaje: se limpian solas cuando el personaje se destruye al respawnear.
 local function onCharacterAdded(character: Model)
 	character.ChildAdded:Connect(function(child: Instance)
-		if child:IsA("Tool") and WeaponConfig.get(child.Name) then
+		local stats = if child:IsA("Tool") then WeaponConfig.get(child.Name) else nil
+		if child:IsA("Tool") and stats then
+			getAmmo(child, stats) -- la primera vez que se equipa, arranca con el cargador lleno
 			attachLeftHandIK(character, child)
 		end
 	end)
 	character.ChildRemoved:Connect(function(child: Instance)
 		if child:IsA("Tool") and WeaponConfig.get(child.Name) then
+			cancelReload(child)
 			detachLeftHandIK(character)
 		end
 	end)
@@ -226,16 +290,18 @@ end
 function WeaponService.start(): ()
 	local remotes = getOrCreate(ReplicatedStorage, "Folder", WeaponConfig.remotesFolderName)
 	local fireRemote = getOrCreate(remotes, "RemoteEvent", WeaponConfig.fireRemoteName) :: RemoteEvent
+	local reloadRemote = getOrCreate(remotes, "RemoteEvent", WeaponConfig.reloadRemoteName) :: RemoteEvent
 	effectRemote = getOrCreate(remotes, "RemoteEvent", WeaponConfig.effectRemoteName) :: RemoteEvent
 
 	fireRemote.OnServerEvent:Connect(onFire)
+	reloadRemote.OnServerEvent:Connect(onReload)
 
 	Players.PlayerAdded:Connect(onPlayerAdded)
 	for _, player in Players:GetPlayers() do
 		onPlayerAdded(player)
 	end
 	Players.PlayerRemoving:Connect(function(player: Player)
-		lastFireTime[player] = nil
+		fireSchedule[player] = nil
 	end)
 end
 
